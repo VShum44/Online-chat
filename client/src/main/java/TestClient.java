@@ -1,17 +1,25 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 public class TestClient {
 
-    static Network network;
-
     public static void main(String[] args) {
-        try {
-            network = new Network(8189);
-            network.sendMsg("Привет");
-            System.out.println(network.readMsg());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Network network = new Network(8189);
+                    Scanner scanner = new Scanner(System.in);
+                    while (true) {
+                        String msgToSend = scanner.nextLine();
+                        network.sendMsg(msgToSend);
+                        System.out.println(network.readMsg());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }
