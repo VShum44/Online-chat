@@ -9,8 +9,8 @@
 
     <HBox>
         <TextField promptText="Insert your name"/>
-        <TextField promptText="Insert port"/>
-        <Button HBox.hgrow="ALWAYS" maxWidth="Infinity" text="Log in!"/>
+        <TextField fx:id="portField" text="8189" />
+        <Button  HBox.hgrow="ALWAYS" maxWidth="Infinity" text="Log in!" onAction="#connect"/>
     </HBox>
     <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" promptText="Здесь будет отображаться история ваших переписок..." />
     <HBox>

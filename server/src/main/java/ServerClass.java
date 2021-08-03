@@ -16,6 +16,8 @@ public class ServerClass {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
+            out.writeUTF("Hi from Server");
+
             while(true){
                 String msg = in.readUTF();
                 System.out.println("Message frm client: \"" + msg + "\"");
