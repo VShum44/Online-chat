@@ -7,21 +7,19 @@ public class TestClient {
 
     public static void main(String[] args) {
 
-        new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Network network = new Network(8189);
-                    Scanner scanner = new Scanner(System.in);
-                    while (true) {
-                        String msgToSend = scanner.nextLine();
-                        network.sendMsg(msgToSend);
-                        System.out.println(network.readMsg());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                for (int i = 0; i < 5; i++) {
+                    System.out.println(i);
                 }
             }
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
+
+        for (int i = 10; i <15 ; i++) {
+            System.out.println(i);
+        }
     }
 }

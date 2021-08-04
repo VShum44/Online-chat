@@ -4,21 +4,30 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class Controller {
+public class ClientController {
 
     @FXML
-    TextArea textArea;
+    TextArea mainTextArea;
 
     @FXML
-    TextField messageField;
+    TextField messageField, portField, passwordField;
 
     @FXML
-    TextField portField;
+    HBox sighInPanel, sendMessagePane;
 
+    private boolean authenticated;
     private Network network;
+
+    private void isAuthenticated(boolean authenticated){
+        sighInPanel.setVisible(!authenticated);
+        sighInPanel.setManaged(authenticated);
+        sendMessagePane.setVisible(authenticated);
+        sendMessagePane.setManaged(authenticated);
+    }
 
     /*
     Отправка сообщений из интерфейса
@@ -27,7 +36,7 @@ public class Controller {
 
         String msgToServer = messageField.getText().trim();
         //Защита против отправки пустого сообщения
-        if (msgToServer == ""){
+        if (msgToServer.equals("")){
             return;
         }
         messageField.clear();
@@ -49,13 +58,13 @@ public class Controller {
             network = new Network(Integer.parseInt(portField.getText()));
             //Получение сообщений и от сервера в новом  потоке
             //И вывод их на основную панель
-            new Thread(new Runnable() {
+           Thread incomingMessagesProcessing  =  new Thread(new Runnable() {
                 @Override
                 public void run() {
                   try {
                     while (true){
                         String msgFromServer = network.readMsg();
-                        textArea.appendText(msgFromServer + "\n");
+                        mainTextArea.appendText(msgFromServer + "\n");
                     }
                   } catch (IOException e) {
                       Platform.runLater(() ->{
@@ -68,7 +77,10 @@ public class Controller {
                       network.close();
                   }
                 }
-            }).start();
+            });
+           incomingMessagesProcessing.setDaemon(true);
+            incomingMessagesProcessing.start();
+
 
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING,"Невозможно подключиться к серверу" +

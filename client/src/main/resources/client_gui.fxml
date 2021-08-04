@@ -1,0 +1,22 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.PasswordField?>
+<VBox fx:controller="ru.vshum.chat.client.ClientController" xmlns:fx="http://javafx.com/fxml" >
+
+    <HBox fx:id="sighInPanel">
+        <TextField promptText="Insert your name"/>
+        <PasswordField fx:id="passwordField" promptText="Password"/>
+        <TextField fx:id="portField" text="8189" />
+        <Button  HBox.hgrow="ALWAYS" maxWidth="Infinity" text="Sign in!" onAction="#connect"/>
+    </HBox>
+    <TextArea fx:id="mainTextArea" editable="false" VBox.vgrow="ALWAYS" promptText="Здесь будет отображаться история ваших переписок..." />
+    <HBox fx:id="sendMessagePane">
+    <TextField fx:id="messageField" HBox.hgrow="ALWAYS" onAction="#sendMessage" promptText=" Text here..."/>
+    <Button text="Send" onAction="#sendMessage"/>
+    </HBox>
+</VBox>
