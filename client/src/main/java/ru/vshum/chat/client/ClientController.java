@@ -14,17 +14,17 @@ public class ClientController {
     TextArea mainTextArea;
 
     @FXML
-    TextField messageField, portField, passwordField;
+    TextField messageField, portField, passwordField, nameField;
 
     @FXML
     HBox sighInPanel, sendMessagePane;
 
-    private boolean authenticated;
+    private boolean authenticated = true;
     private Network network;
 
-    private void isAuthenticated(boolean authenticated){
+    private void authentication(boolean authenticated){
         sighInPanel.setVisible(!authenticated);
-        sighInPanel.setManaged(authenticated);
+        sighInPanel.setManaged(!authenticated);
         sendMessagePane.setVisible(authenticated);
         sendMessagePane.setManaged(authenticated);
     }
@@ -56,6 +56,9 @@ public class ClientController {
         try {
             //Подключение к серверу
             network = new Network(Integer.parseInt(portField.getText()));
+            authentication(authenticated);
+            //Отправка серверу ника и пароля
+            network.sendMsg(nameField.getText() + " " + passwordField.getText());
             //Получение сообщений и от сервера в новом  потоке
             //И вывод их на основную панель
            Thread incomingMessagesProcessing  =  new Thread(new Runnable() {

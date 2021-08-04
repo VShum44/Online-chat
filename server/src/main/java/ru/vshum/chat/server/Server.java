@@ -18,7 +18,6 @@ public class Server {
                 System.out.println("Сервер ожидает полключения клиента...");
                 Socket socket = server.accept();
 
-                DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 out.writeUTF("Hi from Server");
 
@@ -29,8 +28,6 @@ public class Server {
             e.printStackTrace();
         }
     }
-
-
 
         public void broadcastMethod(String msg){
         for (ClientHandler clientHandler : clients) {

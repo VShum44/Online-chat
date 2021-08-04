@@ -12,6 +12,7 @@ public class ClientHandler {
     private DataOutputStream out;
     private Server server;
     private String nickName;
+    private String password;
 
     ClientHandler(Server server, Socket socket) throws IOException {
         this.socket = socket;
@@ -19,14 +20,18 @@ public class ClientHandler {
         this.in = new DataInputStream(socket.getInputStream());
         this.out = new DataOutputStream(socket.getOutputStream());
 
+        String firstMessageFromClient = in.readUTF();
+        nickName = firstMessageFromClient.split(" ")[0];
+//        password = firstMessageFromClient.split(" ")[1];
+
         new Thread(() -> {
             try {
                 while (true){
                     // Получаем сообщение от одного клиента
                     String msgFromClient = in.readUTF();
-                    System.out.println("Message frm client: \"" + msgFromClient + "\"");
+                    System.out.println("Message from client " + nickName + ": \"" + msgFromClient + "\"");
                     // Отправляем его всем клиентам
-                    server.broadcastMethod(msgFromClient);
+                    server.broadcastMethod(nickName + ": " + msgFromClient);
                 }
             }catch (IOException e) {
                 e.printStackTrace();
